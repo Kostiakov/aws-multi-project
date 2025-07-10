@@ -1,0 +1,31 @@
+version: 0.2
+
+env:
+  variables:
+    ARTIFACT_BUCKET: your-artifacts-bucket-name
+    PACKAGED_TEMPLATE: packaged.yaml
+    REGION: us-east-1
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+      python: 3.11
+    commands:
+      - echo Installing SAM CLI
+      - pip install aws-sam-cli
+  pre_build:
+    commands:
+      - echo Logging in to AWS
+      - aws --version
+      - sam --version
+  build:
+    commands:
+      - echo Building Lambda with SAM...
+      - sam build
+      - echo Packaging Lambda...
+      - sam package --template-file .aws-sam/build/template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file $PACKAGED_TEMPLATE --region $REGION
+artifacts:
+  files:
+    - $PACKAGED_TEMPLATE
+  discard-paths: yes

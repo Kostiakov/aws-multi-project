@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  lambda-sam
+
+  Sample SAM Template for lambda-sam
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 20
+    MemorySize: 512
+
+Resources:
+  LambdaUploadsNotificationExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaSQSPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sqs:ReceiveMessage
+                  - sqs:DeleteMessage
+                  - sqs:GetQueueAttributes
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - sns:Publish
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+
+  LambdaUploadsNotificationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/
+      Handler: lambda.UploadsNotificationFunction::handleRequest
+      Role: !GetAtt LambdaUploadsNotificationExecutionRole.Arn
+      Runtime: java17
+      Environment:
+        Variables:
+          TOPIC_ARN: "topic"
+          REGION: "us-east-1"
+          ACCESS_KEY_ID: "1"
+          SECRET_ACCESS_KEY: "2"
+
+  LambdaSQSTrigger:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      BatchSize: 10
+      EventSourceArn: "topic"
+      FunctionName: !Ref LambdaUploadsNotificationFunction
+      Enabled: true
