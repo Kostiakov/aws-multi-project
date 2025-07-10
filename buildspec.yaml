@@ -19,12 +19,16 @@ phases:
       - echo Logging in to AWS
       - aws --version
       - sam --version
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin 151182332702.dkr.ecr.us-east-1.amazonaws.com
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
     commands:
       - echo Building Lambda with SAM...
-      - sam build
+      #- sam build
       - echo Packaging Lambda...
-      - sam package --template-file .aws-sam/build/template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file $PACKAGED_TEMPLATE --region $REGION
+      #- sam package --template-file .aws-sam/build/template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file $PACKAGED_TEMPLATE --region $REGION
 artifacts:
   files:
     - $PACKAGED_TEMPLATE
