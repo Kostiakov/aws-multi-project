@@ -13,12 +13,14 @@ phases:
       python: 3.11
     commands:
       - echo Installing SAM CLI
-      - pip install aws-sam-cli
+      #- pip install aws-sam-cli
+      - echo Running chmod for gradle
+      - chmod +x ./gradlew
   pre_build:
     commands:
       - echo Logging in to AWS
       - aws --version
-      - sam --version
+      #- sam --version
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin 151182332702.dkr.ecr.us-east-1.amazonaws.com
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
