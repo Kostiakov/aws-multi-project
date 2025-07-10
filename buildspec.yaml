@@ -5,6 +5,7 @@ env:
     ARTIFACT_BUCKET: your-artifacts-bucket-name
     PACKAGED_TEMPLATE: packaged.yaml
     REGION: us-east-1
+    IMAGE_REPO_NAME: igor-kostiakov-repository
 
 phases:
   install:
@@ -13,14 +14,14 @@ phases:
       python: 3.11
     commands:
       - echo Installing SAM CLI
-      #- pip install aws-sam-cli
+      - pip install aws-sam-cli
       - echo Running chmod for gradle
       - chmod +x ./gradlew
   pre_build:
     commands:
       - echo Logging in to AWS
       - aws --version
-      #- sam --version
+      - sam --version
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin 151182332702.dkr.ecr.us-east-1.amazonaws.com
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
@@ -28,19 +29,19 @@ phases:
   build:
     commands:
       - echo Building Lambda with SAM...
-      #- sam build
+      - sam build
       - echo Packaging Lambda...
-      #- sam package --template-file .aws-sam/build/template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file $PACKAGED_TEMPLATE --region $REGION
+      - sam package --template-file .aws-sam/build/template.yaml --s3-bucket $ARTIFACT_BUCKET --output-template-file $PACKAGED_TEMPLATE --region $REGION
       - echo Building Application...
       - ./gradlew :application:build -x test
       - echo Building Docker image...
-      - docker build -t igor-kostiakov-repository:$IMAGE_TAG .
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
       - echo Creating tag for Docker image...
-      - docker tag igor-kostiakov-repository:$IMAGE_TAG 151182332702.dkr.ecr.us-east-1.amazonaws.com/igor-kostiakov-repository:$IMAGE_TAG
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG 151182332702.dkr.ecr.us-east-1.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
   post_build:
     commands:
       - echo Pushing image to ECR...
-      - docker push 151182332702.dkr.ecr.us-east-1.amazonaws.com/igor-kostiakov-repository:$IMAGE_TAG
+      - docker push 151182332702.dkr.ecr.us-east-1.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
 artifacts:
   files:
     - $PACKAGED_TEMPLATE
