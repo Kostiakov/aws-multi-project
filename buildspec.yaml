@@ -37,6 +37,10 @@ phases:
       - docker build -t igor-kostiakov-repository:$IMAGE_TAG .
       - echo Creating tag for Docker image...
       - docker tag igor-kostiakov-repository:$IMAGE_TAG 151182332702.dkr.ecr.us-east-1.amazonaws.com/igor-kostiakov-repository:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Pushing image to ECR...
+      - docker push 151182332702.dkr.ecr.us-east-1.amazonaws.com/igor-kostiakov-repository:$IMAGE_TAG
 artifacts:
   files:
     - $PACKAGED_TEMPLATE
