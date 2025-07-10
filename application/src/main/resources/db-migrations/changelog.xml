@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
+    <changeSet author="Igor Kostiakov" id="create-uuid-ossp-extension">
+        <sql>CREATE EXTENSION IF NOT EXISTS "uuid-ossp";</sql>
+    </changeSet>
+    <changeSet author="Igor Kostiakov" id="create_table_ec2">
+        <createTable tableName="images">
+            <column defaultValueComputed="${uuid_function}" name="id" type="uuid">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="name"/>
+            <column name="file_extension" type="name"/>
+            <column name="update_time" type="timestamp"/>
+            <column name="size" type="bigint"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
