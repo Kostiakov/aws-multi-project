@@ -44,10 +44,10 @@ phases:
       - docker push 151182332702.dkr.ecr.us-east-1.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
       - echo Creating imageDetail.json
       - IMAGE_URI="151182332702.dkr.ecr.us-east-1.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG"
-      - echo "{\"ImageUrl\":\"$IMAGE_URI\"}" > imageDetail.json
+      - echo "IMAGE_URI=$IMAGE_URI" >> image.env
 artifacts:
   files:
     - $PACKAGED_TEMPLATE
-    - imageDetail.json
+    - image.env
     - CloudFormation_final_v5.yml
   discard-paths: yes
