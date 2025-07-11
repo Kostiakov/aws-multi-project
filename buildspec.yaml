@@ -42,7 +42,11 @@ phases:
     commands:
       - echo Pushing image to ECR...
       - docker push 151182332702.dkr.ecr.us-east-1.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - echo Creating imageDetail.json
+      - IMAGE_URI="151182332702.dkr.ecr.us-east-1.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG"
+      - echo "{\"ImageUrl\":\"$IMAGE_URI\"}" > imageDetail.json
 artifacts:
   files:
     - $PACKAGED_TEMPLATE
+    - imageDetail.json
   discard-paths: yes
