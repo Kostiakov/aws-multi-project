@@ -49,4 +49,5 @@ artifacts:
   files:
     - $PACKAGED_TEMPLATE
     - imageDetail.json
+    - CloudFormation_final_v5.yml
   discard-paths: yes
