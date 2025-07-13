@@ -2,6 +2,7 @@ package com.example.ec2.service;
 
 import com.example.ec2.dao.ImageMetadata;
 import com.example.ec2.entity.ImageEntity;
+import com.example.ec2.repository.DynamoDbRepository;
 import com.example.ec2.repository.ImageRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class ImageServiceImpl implements ImageService {
     private final S3Client s3Client;
     private final SqsClient sqsClient;
     private final LambdaClient lambdaClient;
+    private final DynamoDbRepository dynamoDbRepository;
     private final ImageRepository imageRepository;
     private final ObjectMapper objectMapper;
 
@@ -55,6 +57,7 @@ public class ImageServiceImpl implements ImageService {
                 .bucket(bucketName)
                 .key(name)
                 .build();
+        dynamoDbRepository.incrementDownloadCount(name);
         log.info("Getting image by name {} was successful", name);
         return s3Client.getObject(getObjectRequest);
     }
@@ -122,6 +125,7 @@ public class ImageServiceImpl implements ImageService {
     public ImageMetadata getImageMetadataByName(String name) {
         log.info("Getting image metadata by name {}", name);
         ImageEntity imageEntity = imageRepository.findByName(name);
+        dynamoDbRepository.incrementViewCount(name);
         log.info("Getting image metadata by name {} was successful", name);
         return convertImageEntityToImageMetadata(imageEntity);
     }
