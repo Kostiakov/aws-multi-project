@@ -28,8 +28,8 @@ public class AwsConfig {
     public S3Client s3Client() {
         return S3Client.builder()
                 .region(Region.of(region))
-                .credentialsProvider(StaticCredentialsProvider
-                        .create(AwsBasicCredentials.create(accessKeyId, secretKey)))
+                //.credentialsProvider(StaticCredentialsProvider
+                //        .create(AwsBasicCredentials.create(accessKeyId, secretKey)))
                 .build();
     }
 
@@ -37,8 +37,8 @@ public class AwsConfig {
     public SnsClient snsClient() {
         return SnsClient.builder()
                 .region(Region.of(region))
-                .credentialsProvider(StaticCredentialsProvider
-                        .create(AwsBasicCredentials.create(accessKeyId, secretKey)))
+                //.credentialsProvider(StaticCredentialsProvider
+                //        .create(AwsBasicCredentials.create(accessKeyId, secretKey)))
                 .build();
     }
 
@@ -46,8 +46,8 @@ public class AwsConfig {
     public SqsClient sqsClient() {
         return SqsClient.builder()
                 .region(Region.of(region))
-                .credentialsProvider(StaticCredentialsProvider
-                        .create(AwsBasicCredentials.create(accessKeyId, secretKey)))
+                //.credentialsProvider(StaticCredentialsProvider
+                //        .create(AwsBasicCredentials.create(accessKeyId, secretKey)))
                 .build();
     }
 
@@ -55,8 +55,8 @@ public class AwsConfig {
     public LambdaClient lambdaClient() {
         return LambdaClient.builder()
                 .region(Region.of(region))
-                .credentialsProvider(StaticCredentialsProvider
-                        .create(AwsBasicCredentials.create(accessKeyId, secretKey)))
+                //.credentialsProvider(StaticCredentialsProvider
+                //        .create(AwsBasicCredentials.create(accessKeyId, secretKey)))
                 .build();
     }
 
@@ -64,8 +64,8 @@ public class AwsConfig {
     public DynamoDbClient dynamoDbClient() {
         return DynamoDbClient.builder()
                 .region(Region.of(region))
-                .credentialsProvider(StaticCredentialsProvider
-                        .create(AwsBasicCredentials.create(accessKeyId, secretKey)))
+                //.credentialsProvider(StaticCredentialsProvider
+                //        .create(AwsBasicCredentials.create(accessKeyId, secretKey)))
                 .build();
     }
 
