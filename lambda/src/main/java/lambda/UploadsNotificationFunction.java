@@ -43,13 +43,13 @@ public class UploadsNotificationFunction implements RequestHandler<SQSEvent, Voi
                         .subject(notificationSubject)
                         .message(notificationMessage)
                         .build();
-                String accessKeyId = System.getenv("ACCESS_KEY_ID");
-                String secretAccessKey = System.getenv("SECRET_ACCESS_KEY");
-                System.out.println("accessKeyId " + accessKeyId.charAt(0) + " secretAccessKey " + secretAccessKey.charAt(0));
+                //String accessKeyId = System.getenv("ACCESS_KEY_ID");
+                //String secretAccessKey = System.getenv("SECRET_ACCESS_KEY");
+                //System.out.println("accessKeyId " + accessKeyId.charAt(0) + " secretAccessKey " + secretAccessKey.charAt(0));
                 SnsClient snsClient = SnsClient.builder()
                         .region(Region.of(System.getenv("REGION")))
-                        .credentialsProvider(StaticCredentialsProvider
-                                .create(AwsBasicCredentials.create(accessKeyId, secretAccessKey)))
+                        //.credentialsProvider(StaticCredentialsProvider
+                        //        .create(AwsBasicCredentials.create(accessKeyId, secretAccessKey)))
                         .build();
                 snsClient.publish(request);
             }

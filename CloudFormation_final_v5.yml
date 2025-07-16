@@ -318,10 +318,6 @@ Resources:
               Value: !Ref UploadsNotificationQueue
             - Name: BUCKET_NAME
               Value: !Ref S3Bucket
-            - Name: AWS_ACCESS_KEY_ID
-              Value: "accessKeyId"
-            - Name: AWS_SECRET_KEY
-              Value: "secretKey"
             - Name: AWS_REGION
               Value: "us-east-1"
 
