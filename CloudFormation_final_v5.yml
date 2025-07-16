@@ -243,6 +243,12 @@ Resources:
     Properties:
       TopicName: !Sub "${ProjectName}-UploadsNotificationTopic"
 
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/ecs/${ProjectName}"
+      RetentionInDays: 7
+
   EcsTaskExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -274,6 +280,12 @@ Resources:
           Essential: true
           PortMappings:
             - ContainerPort: 8080
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref LogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: ecs
           Environment:
             - Name: SPRING_DATASOURCE_URL
               Value: !Sub "jdbc:postgresql://${RDSInstance.Endpoint.Address}:${RDSInstance.Endpoint.Port}/${DBName}"
