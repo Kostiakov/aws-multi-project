@@ -8,13 +8,6 @@ public class ImageMetadata {
     public ImageMetadata() {
     }
 
-    public ImageMetadata(String name, String fileExtension, LocalDateTime updateTime, Long size) {
-        this.name = name;
-        this.fileExtension = fileExtension;
-        this.updateTime = updateTime;
-        this.size = size;
-    }
-
     public String getName() {
         return name;
     }
@@ -47,12 +40,22 @@ public class ImageMetadata {
         this.size = size;
     }
 
+    public String getApplicationUrl() {
+        return applicationUrl;
+    }
+
+    public void setApplicationUrl(String applicationUrl) {
+        this.applicationUrl = applicationUrl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ImageMetadata that = (ImageMetadata) o;
-        return Objects.equals(name, that.name) && Objects.equals(fileExtension, that.fileExtension) && Objects.equals(updateTime, that.updateTime) && Objects.equals(size, that.size);
+        return Objects.equals(name, that.name) && Objects.equals(fileExtension, that.fileExtension) &&
+                Objects.equals(updateTime, that.updateTime) && Objects.equals(size, that.size) &&
+                Objects.equals(applicationUrl, that.applicationUrl);
     }
 
     @Override
@@ -62,12 +65,13 @@ public class ImageMetadata {
                 ", fileExtension='" + fileExtension + '\'' +
                 ", updateTime=" + updateTime +
                 ", size=" + size +
+                ", applicationUrl='" + applicationUrl + '\'' +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, fileExtension, updateTime, size);
+        return Objects.hash(name, fileExtension, updateTime, size, applicationUrl);
     }
 
     private String name;
@@ -77,5 +81,7 @@ public class ImageMetadata {
     private LocalDateTime updateTime;
 
     private Long size;
+
+    private String applicationUrl;
 
 }

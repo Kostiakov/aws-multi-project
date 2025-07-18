@@ -17,4 +17,6 @@ public class ImageMetadata {
 
     private Long size;
 
+    private String applicationUrl;
+
 }

@@ -34,7 +34,7 @@ public class UploadsNotificationFunction implements RequestHandler<SQSEvent, Voi
                 String notificationSubject = "Image was uploaded";
                 String notificationMessage = "Image metadata: size: " + imageMetadata.getSize() + ", name: " +
                         imageMetadata.getName() + ", extension: " + imageMetadata.getFileExtension() +
-                        ". You can download image from this url: http://" + "localhost:8080" +
+                        ". You can download image from this url: http://" + imageMetadata.getApplicationUrl() +
                         "/api/v1/image/download?name=" + imageMetadata.getName();
                 String topicArn = System.getenv("TOPIC_ARN");
                 System.out.println("topicArn: " + topicArn);

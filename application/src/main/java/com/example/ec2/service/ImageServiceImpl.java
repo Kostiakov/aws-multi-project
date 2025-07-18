@@ -50,6 +50,12 @@ public class ImageServiceImpl implements ImageService {
     @Value("${lambda.data-consistency.arn}")
     private String lambdaDataConsistencyArn;
 
+    @Value("${load-balancer.host}")
+    private String loadBalancerHost;
+
+    @Value("${load-balancer.port}")
+    private String loadBalancerPort;
+
     @Override
     public InputStream getImageByName(String name) {
         log.info("Getting image by name {}", name);
@@ -89,9 +95,11 @@ public class ImageServiceImpl implements ImageService {
         try {
             String objectJson = objectMapper.writeValueAsString(convertImageEntityToImageMetadata(imageEntity));
             System.out.println("objectJson: " + objectJson);
+            ImageMetadata imageMetadata = convertImageEntityToImageMetadata(imageEntity);
+            imageMetadata.setApplicationUrl(loadBalancerHost + ":" + loadBalancerPort);
             SendMessageRequest sqsRequest = SendMessageRequest.builder()
                     .queueUrl(sqsQueueUrl)
-                    .messageBody(objectMapper.writeValueAsString(convertImageEntityToImageMetadata(imageEntity)))
+                    .messageBody(objectMapper.writeValueAsString(imageMetadata))
                     .build();
             sqsClient.sendMessage(sqsRequest);
         } catch (Exception e) {
