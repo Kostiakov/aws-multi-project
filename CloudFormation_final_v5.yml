@@ -320,6 +320,10 @@ Resources:
               Value: !Ref S3Bucket
             - Name: AWS_REGION
               Value: "us-east-1"
+            - Name: LOAD_BALANCER_HOST
+              Value: !GetAtt ApplicationLoadBalancer.DNSName
+            - Name: LOAD_BALANCER_PORT
+              Value: "8080"
 
   EcsService:
     Type: AWS::ECS::Service
