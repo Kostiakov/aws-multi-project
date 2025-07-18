@@ -54,7 +54,11 @@ public class DynamoDbRepositoryImpl implements DynamoDbRepository {
                 .expressionAttributeValues(expressionValues)
                 .returnValues(ReturnValue.UPDATED_NEW)
                 .build();
-        dynamoDbClient.updateItem(request);
+        try {
+            dynamoDbClient.updateItem(request);
+        } catch (Exception e) {
+            log.error("Exception while updating analytics: ", e);
+        }
     }
 
 }
