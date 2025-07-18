@@ -511,6 +511,7 @@ Resources:
           JDBC_URL: !Sub "jdbc:postgresql://${RDSInstance.Endpoint.Address}:${RDSInstance.Endpoint.Port}/${DBName}"
           DB_USERNAME: !Ref DBUsername
           DB_PASSWORD: !Ref DBPassword
+          BUCKET_NAME: !Ref S3Bucket
 
   S3VPCEndpoint:
     Type: AWS::EC2::VPCEndpoint
